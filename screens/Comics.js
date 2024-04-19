@@ -1,33 +1,21 @@
-import React, { Component, useState } from 'react';
-import { Text, StyleSheet, View, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
+import { Text, StyleSheet, View, ScrollView, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 import appFirebase from '../credenciales'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
-const auth = getAuth(appFirebase)
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
+const db = getFirestore(appFirebase)
 
 
-export default function Home(props) {
+export default function Comics(props) {
 
     const libros = async () => {
         props.navigation.navigate('Libros')
     }
 
-    const comics = async () => {
-        props.navigation.navigate('Comics')
-    }
-
     return (
         <View style={styles.padre}>
-            <View style={styles.padreBoton}>
-                <TouchableOpacity style={styles.cajaBoton} onPress={libros}>
-                    <Text style={styles.textoBoton}>Ir a libros</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.padreBoton}>
-                <TouchableOpacity style={styles.cajaBoton} onPress={comics}>
-                    <Text style={styles.textoBoton}>Ir a comics</Text>
-                </TouchableOpacity>
-            </View>
+            <Text>COMICS</Text>
         </View>
     )
 }
