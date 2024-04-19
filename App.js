@@ -9,6 +9,7 @@ import Home from './screens/Home';
 import Libros from './screens/Libros';
 import Comics from './screens/Comics';
 import Mostrar from './screens/Mostrar';
+import MostrarComic from './screens/MostrarComic';
 
 
 export default function App() {
@@ -53,7 +54,15 @@ export default function App() {
             headerTitleAlign: 'center',
             headerStyle: { backgroundColor: "#36ADFC" },
           }} />
+          <Stack.Screen name="MostrarComic" component={MostrarComic}
+          options={{
+            title: "Mostrar",
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: "#36ADFC" },
+          }} />
       </Stack.Navigator>
+      
     );
   }
 
