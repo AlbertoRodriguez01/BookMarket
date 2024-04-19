@@ -53,7 +53,7 @@ export default function Libros(props) {
             await addDoc(collection(db, 'Libros'), {
                 ...state
             })
-            Alert.alert('Alerta', 'Guardado con exito')
+            Alert.alert('BookMarket', 'Guardado con exito')
         } catch (error) {
             console.log(error)
         }

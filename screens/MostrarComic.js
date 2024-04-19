@@ -7,26 +7,26 @@ import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setD
 import { list } from 'firebase/storage';
 const db = getFirestore(appFirebase)
 
-export default function Mostrar(props) {
+export default function MostrarComic(props) {
 
-    const [libro, setLibro] = useState({})
+    const [comic, setComic] = useState({})
 
-    const getOneLibro = async (id) => {
+    const getOneComic = async (id) => {
         try {
-            const docRef = doc(db, 'Libros', id)
+            const docRef = doc(db, 'Comics', id)
             const docSnap = await getDoc(docRef)
-            setLibro(docSnap.data())
+            setComic(docSnap.data())
         } catch (error) {
             console.log(error)
         }
     }
 
     useEffect(() => {
-        getOneLibro(props.route.params.libroId)
+        getOneComic(props.route.params.comicId)
     },[])
 
-    const deleteLibro = async (id) => {
-        await deleteDoc(doc(db, 'Libros', id))
+    const deleteComic = async (id) => {
+        await deleteDoc(doc(db, 'Comics', id))
         Alert.alert('Alerta', 'Se ha eliminado')
         props.navigation.navigate('Home')
     }
@@ -34,12 +34,12 @@ export default function Mostrar(props) {
 
     return (
         <View>
-            <Text>Titulo: {libro.titulo} </Text>
-            <Text>Descripcion: {libro.descripcion}</Text>
-            <Text>Precio: {libro.precio}</Text>
+            <Text>Titulo: {comic.titulo} </Text>
+            <Text>Descripcion: {comic.descripcion}</Text>
+            <Text>Precio: {comic.precio}</Text>
 
-            <TouchableOpacity style={styles.cajaBoton} onPress={()=>deleteLibro(props.route.params.libroId)}>
-                <Text style={styles.textoBoton}>Eliminar libro</Text>
+            <TouchableOpacity style={styles.cajaBoton} onPress={()=>deleteComic(props.route.params.comicId)}>
+                <Text style={styles.textoBoton}>Eliminar comic</Text>
             </TouchableOpacity>
         </View>
     );

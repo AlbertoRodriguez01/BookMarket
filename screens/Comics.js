@@ -1,21 +1,88 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, ScrollView, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 import appFirebase from '../credenciales'
 import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
+import { list } from 'firebase/storage';
 const db = getFirestore(appFirebase)
 
 
 export default function Comics(props) {
 
-    const libros = async () => {
-        props.navigation.navigate('Libros')
+
+    const [lista, setLista] = useState([])
+
+    useEffect(() => {
+        const getLista = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'Comics'))
+                const docs = []
+                querySnapshot.forEach((doc) => {
+                    const { titulo, descripcion, precio } = doc.data()
+                    docs.push({
+                        id: doc.id,
+                        titulo,
+                        descripcion,
+                        precio,
+                    })
+                })
+                setLista(docs);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getLista()
+    }, [lista])
+
+    const initialState = {
+        titulo: '',
+        descripcion: '',
+        precio: ''
+    }
+
+    const [state, setState] = useState(initialState)
+
+    const HandleChangeText = (value, name) => {
+        setState({ ...state, [name]: value })
+    }
+
+
+    const saveComic = async () => {
+        try {
+            await addDoc(collection(db, 'Comics'), {
+                ...state
+            })
+            Alert.alert('BookMarket', 'Guardado con exito')
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
         <View style={styles.padre}>
-            <Text>COMICS</Text>
+            <View style={styles.tarjeta}>
+                <TextInput placeholder='Titulo del comic' style={{ paddingHorizontal: 15 }} onChangeText={(value) => HandleChangeText(value, 'titulo')}
+                    value={state.titulo} />
+                <TextInput placeholder='Descripcion' style={{ paddingHorizontal: 15 }} onChangeText={(value) => HandleChangeText(value, 'descripcion')}
+                    value={state.descripcion} />
+                <TextInput placeholder='Precio' style={{ paddingHorizontal: 15 }} onChangeText={(value) => HandleChangeText(value, 'precio')}
+                    value={state.precio} />
+                <View style={styles.padreBoton}>
+                    <TouchableOpacity style={styles.cajaBoton}>
+                        <Text style={styles.textoBoton} onPress={saveComic}>Agregar Comic</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={styles.tarjeta}>
+                {
+                    lista.map((list) => (
+                        <TouchableOpacity key={list.id} style={styles.cajaBoton} onPress={()=>props.navigation.navigate('MostrarComic', {comicId:list.id})}>
+                            <Text style={styles.textoBoton}>{list.titulo}</Text>
+                        </TouchableOpacity>
+                    ))
+                }
+            </View>
         </View>
     )
 }
@@ -23,8 +90,8 @@ export default function Comics(props) {
 const styles = StyleSheet.create({
     padre: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'Top',
+        alignItems: 'Center',
         backgroundColor: 'white'
     },
     logo: {
