@@ -27,7 +27,7 @@ export default function Mostrar(props) {
     },[])
 
     const deleteLibro = async (id) => {
-        await deleteDoc(doc, (db, 'Libros', id))
+        await deleteDoc(doc(db, 'Libros', id))
         Alert.alert('Alerta', 'Se ha eliminado')
         props.navigation.navigate('Home')
     }
