@@ -1,3 +1,8 @@
+//CREAR PROYECTO
+npm install -g expo-cli
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+expo init NOMBREPROYECTO
+
 //INSTALAR NAVEGACION
 npm install @react-navigation/native
 
